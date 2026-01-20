@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, signal, viewChild } from '@angular/core';
-import maplibregl from 'maplibre-gl';
+import maplibregl, { LngLatLike } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { v4 as UUIDV4 } from 'uuid';
 
@@ -69,5 +69,22 @@ export default class MarkersPageComponent implements AfterViewInit {
       maplibreMarker: marker,
     };
     this.markers.update((markers) => [newMarker, ...markers]);
+  }
+
+  flyToMarker(lnglat: LngLatLike) {
+    if (!this.map()) return;
+
+    this.map()?.flyTo({
+      center: lnglat,
+    });
+  }
+
+  deleteMarker(marker: Marker) {
+    if (!this.map()) return;
+
+    const map = this.map();
+
+    marker.maplibreMarker.remove();
+    this.markers.set(this.markers().filter((m) => m.id !== marker.id));
   }
 }

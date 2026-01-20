@@ -1,1 +1,23 @@
 <div #map class="h-[calc(100vh-64px)]"></div>
+<section class="fixed w=[260px] bg-white rounded top-20 left-10 p-5">
+  <h2 class="text-xl font-bold text-black mb-2">Marcadores</h2>
+
+  <div class="flex flex-col gap-2 justify-around">
+    @for (marker of markers(); track marker.id) {
+    <div class="form-control" (dblclick)="deleteMarker(marker)">
+      <label class="label cursor-pointer">
+        <span class="label-text text-xs text-black">{{marker.maplibreMarker.getLngLat()}}</span>
+        <input type="radio" name="radio-12" checked="checked" class="radio"
+          [style]="{backgroundColor:marker.maplibreMarker._color}"
+          (click)="flyToMarker(marker.maplibreMarker.getLngLat())" />
+      </label>
+    </div>
+    } @empty{
+    <div class="flex justify-center items-center bg-blue-100 rounded py-5">
+      <p class="text-xs text-secondary items-center">
+        No hay marcadores
+      </p>
+    </div>
+    }
+  </div>
+</section>
